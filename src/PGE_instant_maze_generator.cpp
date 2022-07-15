@@ -17,7 +17,7 @@ class MazeGenerator : public olc::PixelGameEngine
 public:
   MazeGenerator()
   {
-    sAppName = "Maze generator";
+    sAppName = "Instant Maze Generator";
   }
 
 private:
@@ -83,7 +83,7 @@ public:
   }
 
 
-  // -----
+  // ----------------------------------------------------------------------------------------------------
 
 
 private:
@@ -242,60 +242,34 @@ private:
     }
   }
 
-  /**
-   * @brief Returns an vector of valid directions to choose from.
-   * Maze cells outside the edge of the maze are not added to the vector
-   *
-   * @param neighbours Vector with all valid directions to choose from
-   */
+  // Returns a vector of valid directions to choose from.
+  // Maze cells outside the edge of the maze are not added to the vector
   void addAllValidNeighbours(std::vector<Direction>& neighbours)
   {
     // TODO: refactor this
-    // Check if upper neighbour exists
-    if (unvisitedCells.top().y > 0)
+    // If the upper neighbour exists and its direction is NOT_SET, add it as a valid neighbour
+    if (unvisitedCells.top().y > 0 && maze[IndexOfNeighbour(Direction{UP})] == NOT_SET)
     {
-      // If the upper neightbour's direction is not set add it as a valid neighbour
-      if (maze[IndexOfNeighbour(Direction{UP})] == NOT_SET)
-      {
-        neighbours.push_back(Direction{UP});
-      }
+      neighbours.push_back(Direction{UP});
     }
 
-    // Check if left neighbour exists
-    if (unvisitedCells.top().x > 0)
+    // If the left neighbour exists and its direction is NOT_SET, add it as a valid neighbour
+    if (unvisitedCells.top().x > 0 && maze[IndexOfNeighbour(Direction{LEFT})] == NOT_SET)
     {
-      // If the left neightbour's direction is not set add it as a valid neighbour
-      if (maze[IndexOfNeighbour(Direction{LEFT})] == NOT_SET)
-      {
-        neighbours.push_back(Direction{LEFT});
-      }
+      neighbours.push_back(Direction{LEFT});
     }
 
-    // Check if lower neighbour exists
-    if (unvisitedCells.top().y < mazeWidth - 1)
+    // If the lower neighbour exists and its direction is NOT_SET, add it as a valid neighbour
+    if (unvisitedCells.top().y < mazeWidth - 1 && maze[IndexOfNeighbour(Direction{DOWN})] == NOT_SET)
     {
-      // If the lower neightbour's direction is not set add it as a valid neighbour
-      if (maze[IndexOfNeighbour(Direction{DOWN})] == NOT_SET)
-      {
-        neighbours.push_back(Direction{DOWN});
-      }
+      neighbours.push_back(Direction{DOWN});
     }
 
-    // Check if right neighbour exists
-    if (unvisitedCells.top().x < mazeHeight - 1)
+    // If the right neighbour exists and its direction is NOT_SET, add it as a valid neighbour
+    if (unvisitedCells.top().x < mazeHeight - 1 && maze[IndexOfNeighbour(Direction{RIGHT})] == NOT_SET)
     {
-      // If the right neightbour's direction is not set add it as a valid neighbour
-      if (maze[IndexOfNeighbour(Direction{RIGHT})] == NOT_SET)
-      {
-        neighbours.push_back(Direction{RIGHT});
-      }
+      neighbours.push_back(Direction{RIGHT});
     }
-  }
-
-  // Returns the index of a cell's neighbour in maze
-  int IndexOfNeighbour(olc::vi2d direction)
-  {
-    return (unvisitedCells.top().y + direction.y) * mazeWidth + (unvisitedCells.top().x + direction.x);
   }
 
   // Returns the index of a cell's neighbour in maze or the current cell's
@@ -370,19 +344,13 @@ private:
 
     return neighbour;
   }
-
-  // Returns the coordinates of the current cell (top of stack)
-  olc::vi2d CoordinatesOfCurrentCell()
-  {
-    return olc::vi2d{unvisitedCells.top().x, unvisitedCells.top().y};
-  }
 };
 
 int main()
 {
   MazeGenerator instance;
 
-  if (instance.Construct(201, 201, 4, 4))
+  if (instance.Construct(201, 201, 4, 4, false, true))
   {
     instance.Start();
   }
