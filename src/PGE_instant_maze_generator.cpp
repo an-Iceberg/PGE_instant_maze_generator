@@ -11,7 +11,6 @@ enum Direction
   RIGHT
 };
 
-// TODO: refactor and remove all unused code
 class MazeGenerator : public olc::PixelGameEngine
 {
 public:
