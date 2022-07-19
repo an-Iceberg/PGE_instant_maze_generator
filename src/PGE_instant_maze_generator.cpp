@@ -20,11 +20,11 @@ public:
   }
 
 private:
-  int mazeWidth; // Maze width in maze cells
-  int mazeHeight; // Maze height in maze cells
-  int cellCount; // Number of cells in the maze
-  int pathWidth; // Path width in pixels
-  std::vector<Direction> maze; // Vector containing all cells and their data/information
+  const int mazeWidth = 50; // Maze width in maze cells
+  const int mazeHeight = 50; // Maze height in maze cells
+  const int cellCount = 2500; // Number of cells in the maze
+  const int pathWidth = 3; // Path width in pixels
+  Direction maze [2500]; // Vector containing all cells and their data/information
   // TODO: maybe we can do without visitedCellsCounter
   int visitedCellsCounter; // Number of cells that has been visited
   std::stack<olc::vi2d> unvisitedCells; // Contains all maze cells (as coordinates) who's direction has not yet been set
@@ -35,16 +35,12 @@ public:
     // Initializing the random number generator
     srand(time(nullptr));
 
-    mazeHeight = 50;
-    mazeWidth = 50;
-    cellCount = mazeWidth * mazeHeight;
-    pathWidth = 3;
     visitedCellsCounter = cellCount + 1;
 
     // Set all the maze cells to have no direction
     for (int i = 0; i < cellCount; i++)
     {
-      maze.push_back(Direction{NOT_SET});
+      maze[i] = Direction{NOT_SET};
     }
 
     Clear(olc::BLACK);
@@ -64,9 +60,9 @@ public:
       visitedCellsCounter = 1;
 
       // Resetting all maze data
-      for (std::vector<Direction>::iterator cell = maze.begin(); cell < maze.end(); cell++)
+      for (Direction& cell : maze)
       {
-        *cell = NOT_SET;
+        cell = Direction{NOT_SET};
       }
 
       // The top leftmost cell is going to be the starting point for the maze
@@ -147,9 +143,9 @@ private:
   void PaintingRoutine()
   {
     // Draws each cell
-    for (std::vector<Direction>::iterator cell = maze.begin(); cell < maze.end(); cell++)
+    for (int currentCellIndex = 0; currentCellIndex < cellCount; currentCellIndex++)
     {
-      int currentCellIndex = std::distance(maze.begin(), cell);
+      // int currentCellIndex = std::distance(maze.begin(), cell);
 
       // Calculating the x and y coordinates of the current cell
       // x = index % height
@@ -159,7 +155,7 @@ private:
       olc::Pixel interiorColor;
 
       // Paints the cell interior
-      if (*cell == NOT_SET)
+      if (maze[currentCellIndex] == NOT_SET)
       {
         interiorColor = olc::BLUE;
       }
@@ -169,7 +165,7 @@ private:
       }
 
       paintCellInterior(currentCell, interiorColor);
-      paintCellWall(currentCell, *cell);
+      paintCellWall(currentCell, maze[currentCellIndex]);
 
       // HACK: the -1 correction on the x is necessary for some reason
       currentCell.x--;
@@ -245,7 +241,6 @@ private:
   // Maze cells outside the edge of the maze are not added to the vector
   void addAllValidNeighbours(std::vector<Direction>& neighbours)
   {
-    // TODO: refactor this
     // If the upper neighbour exists and its direction is NOT_SET, add it as a valid neighbour
     if (unvisitedCells.top().y > 0 && maze[IndexOfNeighbour(Direction{UP})] == NOT_SET)
     {
