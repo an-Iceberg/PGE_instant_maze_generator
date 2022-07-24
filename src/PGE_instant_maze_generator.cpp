@@ -53,7 +53,7 @@ public:
   bool OnUserUpdate(float fElapsedTime) override
   {
     // Generate new maze when ENTER key is pressed
-    if (GetKey(olc::Key::ENTER).bPressed)
+    if (GetKey(olc::Key::ENTER).bPressed || GetMouse(0).bPressed)
     {
       Clear(olc::BLACK);
 
