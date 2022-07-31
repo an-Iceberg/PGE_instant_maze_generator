@@ -53,7 +53,7 @@ public:
   bool OnUserUpdate(float fElapsedTime) override
   {
     // Generate new maze when ENTER key is pressed
-    if (GetKey(olc::Key::ENTER).bPressed || GetMouse(0).bPressed)
+    if (GetKey(olc::Key::ENTER).bPressed or GetMouse(0).bPressed)
     {
       Clear(olc::BLACK);
 
@@ -93,7 +93,7 @@ private:
       addAllValidNeighbours(validNeighbours);
 
       // If there are any valid neighbours choose a random one
-      if (!validNeighbours.empty())
+      if (not validNeighbours.empty())
       {
         // Chooses a random neighbour from all valid neighbours
         Direction nextCellDirection = validNeighbours[rand() % validNeighbours.size()];
@@ -171,7 +171,7 @@ private:
       currentCell.x--;
 
       // If this cell is the top of the stack
-      if (!unvisitedCells.empty() && currentCell.x == unvisitedCells.top().x && currentCell.y == unvisitedCells.top().y)
+      if (not (unvisitedCells.empty()) and currentCell.x == unvisitedCells.top().x and currentCell.y == unvisitedCells.top().y)
       {
         // On the last painting cycle the top of the stack is painted as a regular cell
         if (visitedCellsCounter == cellCount)
@@ -242,25 +242,25 @@ private:
   void addAllValidNeighbours(std::vector<Direction>& neighbours)
   {
     // If the upper neighbour exists and its direction is NOT_SET, add it as a valid neighbour
-    if (unvisitedCells.top().y > 0 && maze[IndexOfNeighbour(Direction{UP})] == NOT_SET)
+    if (unvisitedCells.top().y > 0 and maze[IndexOfNeighbour(Direction{UP})] == NOT_SET)
     {
       neighbours.push_back(Direction{UP});
     }
 
     // If the left neighbour exists and its direction is NOT_SET, add it as a valid neighbour
-    if (unvisitedCells.top().x > 0 && maze[IndexOfNeighbour(Direction{LEFT})] == NOT_SET)
+    if (unvisitedCells.top().x > 0 and maze[IndexOfNeighbour(Direction{LEFT})] == NOT_SET)
     {
       neighbours.push_back(Direction{LEFT});
     }
 
     // If the lower neighbour exists and its direction is NOT_SET, add it as a valid neighbour
-    if (unvisitedCells.top().y < mazeWidth - 1 && maze[IndexOfNeighbour(Direction{DOWN})] == NOT_SET)
+    if (unvisitedCells.top().y < mazeWidth - 1 and maze[IndexOfNeighbour(Direction{DOWN})] == NOT_SET)
     {
       neighbours.push_back(Direction{DOWN});
     }
 
     // If the right neighbour exists and its direction is NOT_SET, add it as a valid neighbour
-    if (unvisitedCells.top().x < mazeHeight - 1 && maze[IndexOfNeighbour(Direction{RIGHT})] == NOT_SET)
+    if (unvisitedCells.top().x < mazeHeight - 1 and maze[IndexOfNeighbour(Direction{RIGHT})] == NOT_SET)
     {
       neighbours.push_back(Direction{RIGHT});
     }
